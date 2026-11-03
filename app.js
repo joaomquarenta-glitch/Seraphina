@@ -36,6 +36,9 @@ async function loadMedia() {
     for (const [k, el] of [['idle', 'vidIdle'], ['talk', 'vidTalk']]) {
       const b = await db.get(k);
       if (b) { $(el).src = URL.createObjectURL(b); $(el).dataset.ready = '1'; }
+      else {
+        try { const r = await fetch(k + '.mp4', {method: 'HEAD'}); if (r.ok) { $(el).src = k + '.mp4'; $(el).dataset.ready = '1'; } } catch {}
+      }
     }
   } catch {}
   setMood('idle');
