@@ -1,4 +1,4 @@
-const CACHE = 'seraphina-v2';
+const CACHE = 'seraphina-v3';
 const FILES = ['./', 'index.html', 'style.css', 'app.js', 'lessons.js', 'seraphina.jpg',
   'icon-192.png', 'icon-512.png', 'manifest.webmanifest'];
 self.addEventListener('install', e => {
