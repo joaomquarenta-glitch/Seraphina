@@ -14,6 +14,7 @@ const S = {
   get model() { return store.get('model', 'gemini-flash-latest'); },
   get rate() { return Number(store.get('rate', 0.85)); },
   get voiceName() { return store.get('voice', ''); },
+  get pitch() { return Number(store.get('pitch', 1.2)); },
 };
 
 // ---------- media (photo / video clips kept in IndexedDB) ----------
@@ -63,6 +64,7 @@ function loadVoices() {
   sel.replaceChildren();
   for (const v of es) { const o = new Option(v.name, v.name, false, v.name === cur); sel.add(o); }
   if (!es.length) sel.add(new Option('(sem vozes espanholas instaladas)', ''));
+  if (!cur && es.length) { const v = pickVoice('es-ES'); if (v) sel.value = v.name; }
 }
 speechSynthesis.onvoiceschanged = loadVoices;
 function pickVoice(lang, male) {
@@ -73,7 +75,7 @@ function pickVoice(lang, male) {
   const pool = voices.filter(v => v.lang.replace('_', '-').toLowerCase().startsWith(pre));
   const exact = pool.filter(v => v.lang.replace('_', '-') === lang);
   const list = exact.length ? exact : pool;
-  const fem = /female|mujer|helena|elvira|laura|lucia|monica|paulina|sabina|ines|joana|fernanda|-f\b|#female/i;
+  const fem = /female|femenin|mujer|helena|elvira|laura|lucia|lucía|monica|mónica|paulina|sabina|marisol|conchita|ines|inês|joana|fernanda|catarina|google español|x-eea|x-eec|-f\b|#female/i;
   const mal = /male|hombre|pablo|alvaro|jorge|diego|duarte|antonio|-m\b|#male/i;
   return (male ? list.find(v => mal.test(v.name) && !/female/i.test(v.name)) : list.find(v => fem.test(v.name))) || list[0] || null;
 }
@@ -85,7 +87,7 @@ function utter(text, lang, opts = {}) {
     const u = new SpeechSynthesisUtterance(text);
     u.lang = lang; u.voice = pickVoice(lang, opts.male);
     u.rate = opts.slow ? S.rate * 0.8 : S.rate;
-    u.pitch = opts.male ? 0.8 : opts.other ? 1.3 : 1.05;
+    u.pitch = opts.male ? 0.8 : opts.other ? Math.min(2, S.pitch + 0.25) : (lang.startsWith('es') ? S.pitch : 1.1);
     u.onend = u.onerror = () => res();
     speechSynthesis.speak(u);
   });
@@ -307,15 +309,15 @@ $('btnRepeat').onclick = async () => {
 
 // ---------- settings dialog ----------
 $('btnSettings').onclick = () => {
-  $('apiKey').value = S.apiKey; $('model').value = S.model; $('rate').value = S.rate;
+  $('apiKey').value = S.apiKey; $('model').value = S.model; $('rate').value = S.rate; $('pitch').value = S.pitch;
   loadVoices(); $('settings').showModal();
 };
 $('settings').addEventListener('close', () => {
   store.set('apiKey', $('apiKey').value.trim()); store.set('model', $('model').value.trim() || 'gemini-flash-latest');
-  store.set('rate', $('rate').value); store.set('voice', $('voiceSel').value);
+  store.set('rate', $('rate').value); store.set('voice', $('voiceSel').value); store.set('pitch', $('pitch').value);
 });
 $('btnTestVoice').onclick = () => {
-  store.set('voice', $('voiceSel').value); store.set('rate', $('rate').value);
+  store.set('voice', $('voiceSel').value); store.set('rate', $('rate').value); store.set('pitch', $('pitch').value);
   speechSynthesis.cancel(); utter('¡Hola! Soy Seraphina. Encantada de conocerte.', 'es-ES');
 };
 for (const [id, key] of [['filePhoto', 'photo'], ['fileIdle', 'idle'], ['fileTalk', 'talk']]) {
