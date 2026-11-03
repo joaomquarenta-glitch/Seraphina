@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="pt-PT">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#120b08">
+<title>Seraphina</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main id="stage">
+  <div id="avatar" class="idle">
+    <img id="photo" src="seraphina.jpg" alt="Seraphina">
+    <video id="vidIdle" muted loop playsinline hidden></video>
+    <video id="vidTalk" muted loop playsinline hidden></video>
+    <div id="glow"></div>
+  </div>
+
+  <header id="top">
+    <div>
+      <h1>Seraphina</h1>
+      <p id="phase">Professora de espanhol · Madrid</p>
+    </div>
+    <button id="btnSettings" class="icon" aria-label="Definições">⚙</button>
+  </header>
+
+  <section id="caption" aria-live="polite">
+    <p id="capEs"></p>
+    <p id="capPt"></p>
+  </section>
+
+  <section id="home" class="panel">
+    <p id="streak"></p>
+    <button id="btnLesson" class="big">Aula de hoje</button>
+    <p id="lessonName" class="small"></p>
+    <button id="btnChat" class="ghost">Conversa livre</button>
+  </section>
+
+  <section id="controls" class="panel" hidden>
+    <button id="btnMic" class="mic" aria-label="Falar">🎤</button>
+    <p id="hint" class="small">Toca para falar</p>
+    <div class="row">
+      <button id="btnRepeat" class="ghost sm">Repetir</button>
+      <button id="btnSkip" class="ghost sm">Seguinte</button>
+      <button id="btnStop" class="ghost sm">Sair</button>
+    </div>
+  </section>
+</main>
+
+<dialog id="settings">
+  <form method="dialog">
+    <h2>Definições</h2>
+    <label>Chave da API Gemini (grátis)
+      <input id="apiKey" type="password" autocomplete="off" placeholder="AIza...">
+    </label>
+    <p class="small">Cria em <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener">aistudio.google.com/apikey</a>. Fica guardada só neste telemóvel.</p>
+    <label>Modelo
+      <input id="model" type="text" value="gemini-flash-latest">
+    </label>
+    <label>Velocidade da voz
+      <input id="rate" type="range" min="0.6" max="1.1" step="0.05" value="0.85">
+    </label>
+    <label>Voz espanhola
+      <select id="voiceSel"></select>
+    </label>
+    <label>Foto da Seraphina (imagem grande do Canva)
+      <input id="filePhoto" type="file" accept="image/*">
+    </label>
+    <label>Vídeo dela à espera (opcional)
+      <input id="fileIdle" type="file" accept="video/*">
+    </label>
+    <label>Vídeo dela a falar (opcional)
+      <input id="fileTalk" type="file" accept="video/*">
+    </label>
+    <div class="row">
+      <button id="btnTestVoice" type="button" class="ghost sm">Testar voz</button>
+      <button id="btnClearMedia" type="button" class="ghost sm">Repor foto</button>
+      <button value="ok" class="sm">Guardar</button>
+    </div>
+  </form>
+</dialog>
+
+<script src="lessons.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

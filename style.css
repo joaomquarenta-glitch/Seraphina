@@ -1,0 +1,58 @@
+:root{
+  --bg:#120b08; --gold:#e6c27a; --gold2:#b8904a; --crimson:#9e1b2a;
+  --text:#f6efe6; --muted:#c9b9a6; --panel:rgba(18,11,8,.72);
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--text);
+  font-family:Georgia,"Times New Roman",serif;-webkit-tap-highlight-color:transparent}
+#stage{position:relative;height:100dvh;overflow:hidden;
+  background:radial-gradient(ellipse at 50% 35%,#3a2412 0%,#120b08 70%)}
+#avatar{position:absolute;inset:0;display:flex;justify-content:center;align-items:flex-start}
+#avatar img,#avatar video{height:100%;width:100%;object-fit:cover;object-position:center top;
+  transform-origin:50% 30%}
+#glow{position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(ellipse at 50% 25%,rgba(230,194,122,.0),transparent 60%);transition:background .6s}
+#avatar.idle img{animation:breathe 5s ease-in-out infinite}
+#avatar.talking img{animation:talk 1.6s ease-in-out infinite}
+#avatar.talking #glow{background:radial-gradient(ellipse at 50% 25%,rgba(230,194,122,.18),transparent 60%)}
+#avatar.listening #glow{background:radial-gradient(ellipse at 50% 90%,rgba(158,27,42,.35),transparent 60%)}
+@keyframes breathe{0%,100%{transform:scale(1)}50%{transform:scale(1.012) translateY(-2px)}}
+@keyframes talk{0%,100%{transform:scale(1.01) rotate(0)}25%{transform:scale(1.016) rotate(-.25deg)}
+  75%{transform:scale(1.014) rotate(.25deg)}}
+#top{position:absolute;top:0;left:0;right:0;display:flex;justify-content:space-between;align-items:flex-start;
+  padding:calc(env(safe-area-inset-top) + 12px) 16px 24px;
+  background:linear-gradient(rgba(0,0,0,.6),transparent)}
+h1{margin:0;font-size:1.6rem;color:var(--gold);letter-spacing:.06em;font-weight:normal}
+#phase{margin:2px 0 0;color:var(--muted);font-size:.85rem}
+#caption{position:absolute;left:12px;right:12px;bottom:230px;text-align:center;pointer-events:none}
+#caption p{margin:4px auto;max-width:34rem;padding:0 8px}
+#capEs{font-size:1.25rem;text-shadow:0 2px 8px #000}
+#capPt{font-size:.95rem;color:var(--muted);font-style:italic;text-shadow:0 2px 8px #000}
+#caption:not(:empty) #capEs:not(:empty){background:var(--panel);border-radius:12px;padding:8px 12px}
+.panel{position:absolute;left:0;right:0;bottom:0;padding:20px 16px calc(env(safe-area-inset-bottom) + 20px);
+  display:flex;flex-direction:column;align-items:center;gap:10px;
+  background:linear-gradient(transparent,rgba(0,0,0,.85) 30%)}
+button{font:inherit;color:var(--text);border:0;cursor:pointer}
+.big{background:linear-gradient(135deg,var(--crimson),#6e0f1b);border:1px solid var(--gold2);
+  padding:16px 40px;border-radius:999px;font-size:1.2rem;min-width:240px}
+.ghost{background:transparent;border:1px solid var(--gold2);padding:10px 24px;border-radius:999px}
+.sm{padding:8px 16px;font-size:.9rem}
+.icon{background:var(--panel);width:44px;height:44px;border-radius:50%;font-size:1.3rem;border:1px solid var(--gold2)}
+.mic{width:84px;height:84px;border-radius:50%;font-size:2rem;
+  background:radial-gradient(circle,var(--crimson),#5a0b16);border:2px solid var(--gold)}
+.mic.on{animation:pulse 1s ease-in-out infinite;background:radial-gradient(circle,#d22c40,#7a0f1e)}
+.mic:disabled{opacity:.4}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(210,44,64,.6)}50%{box-shadow:0 0 0 14px rgba(210,44,64,0)}}
+.row{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.small{font-size:.85rem;color:var(--muted);margin:0;text-align:center}
+#streak{color:var(--gold);margin:0}
+dialog{background:#1d130d;color:var(--text);border:1px solid var(--gold2);border-radius:16px;
+  width:min(92vw,420px);padding:20px}
+dialog::backdrop{background:rgba(0,0,0,.7)}
+dialog h2{margin-top:0;color:var(--gold);font-weight:normal}
+dialog label{display:block;margin:12px 0;font-size:.9rem}
+dialog input[type=text],dialog input[type=password],dialog select{display:block;width:100%;margin-top:4px;padding:10px;
+  border-radius:8px;border:1px solid #5a4632;background:#120b08;color:var(--text);font:inherit}
+dialog input[type=range],dialog input[type=file]{width:100%;margin-top:4px}
+a{color:var(--gold)}
+[hidden]{display:none!important}
